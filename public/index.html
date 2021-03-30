@@ -17,11 +17,16 @@
 
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px;}
       #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; margin-top: 16px;}
+      #message .proto { display: none; }
+      #message .abs {position: relative}
+      #message label {display: block; position: absolute; top: -8px; left: 16px; background-color: white; padding: 0 8px;}
+      #message input[type=text] {display: block; padding: 8px; border-radius: 4px}
+      #message input[type=file] {display: block; width: 100%; margin: 16px 0;}
       #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
       #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
       @media (max-width: 600px) {
@@ -36,8 +41,14 @@
       <h1>The Space usabilityonderzoek</h1>
       <h3 id="values"></h3>
       <p>Om te zorgen voor goede feedback schotelen we iedereen 2 willekeurige versies van het prototype voor, de versies die voor jouw geselecteerd zijn vind je hieronder (ze openen in een nieuw tabblad)</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open eerste prototype</a>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open tweede prototype</a>
+      <p class="abs form">
+        <label for="naam">Naam</label>
+        <input type="text" name="naam" id="naam">
+        <input type="file" name="file" id="file">
+      </p>
+      <a href="#" id="submit" class="form">Verzenden</a>
+      <a target="_blank" class="proto" href="https://firebase.google.com/docs/hosting/">Open eerste prototype</a>
+      <a target="_blank" class="proto" href="https://firebase.google.com/docs/hosting/">Open tweede prototype</a>
     </div>
     <p id="load">Firebase SDK Loading&hellip;</p>
 
@@ -45,16 +56,29 @@
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
         const values = document.querySelector('#values');
+        const submit = document.querySelector('#submit');
+
+        submit.addEventListener('click', event => {
+          document.querySelectorAll('.proto').forEach(element => {
+            element.style.display = 'block';
+          })
+          document.querySelectorAll('.form').forEach(element => {
+            element.style.display = 'none';
+          })
+
+        });
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
         //
         var config = {
-          databaseURL: "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/"
+          databaseURL: "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/",
+          storageBucket: 'gs://ipmedth-individueel.appspot.com/'
         };
         firebase.initializeApp(config);
         firebase.database().ref('v1').on('value', snapshot => {
           values.innerHTML = JSON.stringify(snapshot.val())
         });
+        var storage = firebase.storage().ref();
         //
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
