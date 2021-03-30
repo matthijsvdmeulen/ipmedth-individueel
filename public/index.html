@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Space Usabilityonderzoek</title>
 
+    <script>
+      // Application Vars
+
+      // DB naam
+      const db = "v1";
+
+      // Firebase realtime database URL
+      const dburl = "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/";
+
+      // Firebase storage URL
+      const storageurl = "gs://ipmedth-individueel.appspot.com/";
+
+      // URL onderzoeken
+      const onderzoeken = {
+        "v1": "",
+        "v2": "",
+        "v3": "",
+        "v4": "",
+        "v5": "",
+        "v6": "",
+        "v7": "",
+        "v8": "",
+      }
+    </script>
+
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/8.3.1/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
@@ -69,20 +94,10 @@
         const filelabel = document.querySelector('#filelabel');
         const filediv = document.querySelector('#filediv');
 
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        var config = {
-          databaseURL: "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/",
-          storageBucket: 'gs://ipmedth-individueel.appspot.com/'
-        };
-        firebase.initializeApp(config);
-        firebase.database().ref('v1').on('value', snapshot => {
-          values.innerHTML = JSON.stringify(snapshot.val())
+        firebase.initializeApp({
+          databaseURL: dburl,
+          storageBucket: storageurl
         });
-        var storage = firebase.storage().ref();
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
         try {
           let app = firebase.app();
@@ -95,6 +110,11 @@
           console.error(e);
           loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
         }
+
+        firebase.database().ref(db).on('value', snapshot => {
+          values.innerHTML = JSON.stringify(snapshot.val())
+        });
+        var storage = firebase.storage().ref();
 
         submit.addEventListener('click', event => {
           event.preventDefault();
@@ -121,11 +141,18 @@
             bestandCloud.put(bestandLokaal).then(snapshot => {
               console.log('geupload!');
             });
+
+            proto1 = document.querySelector('#proto1');
+            proto2 = document.querySelector('#proto2');
+
+            firebase.database().ref(db).on('value', snapshot => {
+              data = snapshot.val();
+
+              snapshot.val()[Math.floor(Math.random() * Math.floor(4))]
+            });
+
             document.querySelectorAll('.proto').forEach(element => {
               element.style.display = 'block';
-              firebase.database().ref('v1').on('value', snapshot => {
-                values.innerHTML = JSON.stringify(snapshot.val())
-              });
             })
             document.querySelectorAll('.form').forEach(element => {
               element.style.display = 'none';

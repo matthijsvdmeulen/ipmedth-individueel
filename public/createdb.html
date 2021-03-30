@@ -5,6 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Space Usabilityonderzoek (Database Creator)</title>
 
+    <script>
+      // Application Vars
+
+      // Firebase realtime database URL
+      const dburl = "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/";
+      const dbformat = {
+        proto1: [
+                  {
+                    name: "v1",
+                    value: 0,
+                  },
+                  {
+                    name: "v2",
+                    value: 0,
+                  },
+                  {
+                    name: "v3",
+                    value: 0,
+                  },
+                  {
+                    name: "v4",
+                    value: 0,
+                  },
+                  {
+                    name: "v5",
+                    value: 0,
+                  },
+                  {
+                    name: "v6",
+                    value: 0,
+                  },
+                ],
+        proto2: [
+                  {
+                    name: "v7",
+                    value: 0,
+                  },
+                  {
+                    name: "v8",
+                    value: 0,
+                  },
+                ]
+      };
+      // Firebase storage URL
+      const storageurl = "gs://ipmedth-individueel.appspot.com/";
+    </script>
+
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/8.3.1/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
@@ -62,7 +109,7 @@
         // // The Firebase SDK is initialized and available here!
         //
         var config = {
-          databaseURL: "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/"
+          databaseURL: dburl
         };
         firebase.initializeApp(config);
         //
@@ -85,22 +132,11 @@
           if (naam.value === "") {
             naam.style.border = "2px solid red";
             naamlabel.style.color = "red";
-            file.color = "red";
           } else {
-            firebase.database().ref(naam.value).set({
-              v1: 0,
-              v2: 0,
-              v3: 0,
-              v4: 0,
-              v5: 0,
-              v6: 0,
-              v7: 0,
-              v8: 0
-            });
+            firebase.database().ref(naam.value).set(dbformat);
 
             naam.style.border = "2px solid green";
             naamlabel.style.color = "green";
-            file.color = "green";
           }
 
         });
