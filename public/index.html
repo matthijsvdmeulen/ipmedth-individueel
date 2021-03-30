@@ -112,7 +112,7 @@
         }
 
         firebase.database().ref(db).on('value', snapshot => {
-          values.innerHTML = JSON.stringify(snapshot.val())
+          values.innerHTML = JSON.stringify(snapshot.val(), null, "  ")
         });
         var storage = firebase.storage().ref();
 
@@ -153,7 +153,7 @@
               proto1data.pop();
               finalproto1 = proto1data[Math.floor(Math.random() * Math.floor(proto1data.length))];
 
-              proto2data = snapshot.val().proto2;
+              proto2data = Object.entries(snapshot.val().proto2);
               proto2data.sort((val1, val2) => {
                 return val1[1] - val2[1];
               });
@@ -164,7 +164,7 @@
               proto2.href = onderzoeken[proto2data[0]];
               firebase.database().ref(db + "/proto2/" + proto2data[0]).set(proto2data[1] + 1);
               firebase.database().ref(db).on('value', snapshot => {
-                values.innerHTML = JSON.stringify(snapshot.val())
+                values.innerHTML = JSON.stringify(snapshot.val(), null, "  ")
               });
             });
 
