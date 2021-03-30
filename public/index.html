@@ -146,9 +146,26 @@
             proto2 = document.querySelector('#proto2');
 
             firebase.database().ref(db).on('value', snapshot => {
-              data = snapshot.val();
+              proto1data = Object.entries(snapshot.val().proto1);
+              proto1data.sort((val1, val2) => {
+                return val1[1] - val2[1];
+              });
+              proto1data.pop();
+              finalproto1 = proto1data[Math.floor(Math.random() * Math.floor(proto1data.length))];
 
-              snapshot.val()[Math.floor(Math.random() * Math.floor(4))]
+              proto2data = snapshot.val().proto2;
+              proto2data.sort((val1, val2) => {
+                return val1[1] - val2[1];
+              });
+              finalproto2 = proto2data[0];
+
+              proto1.href = onderzoeken[proto1data[0]];
+              firebase.database().ref(db + "/proto1/" + proto1data[0]).set(proto1data[1] + 1);
+              proto2.href = onderzoeken[proto2data[0]];
+              firebase.database().ref(db + "/proto2/" + proto2data[0]).set(proto2data[1] + 1);
+              firebase.database().ref(db).on('value', snapshot => {
+                values.innerHTML = JSON.stringify(snapshot.val())
+              });
             });
 
             document.querySelectorAll('.proto').forEach(element => {
