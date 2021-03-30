@@ -159,10 +159,10 @@
               });
               finalproto2 = proto2data[0];
 
-              proto1.href = onderzoeken[proto1data[0]];
-              firebase.database().ref(db + "/proto1/" + proto1data[0]).set(proto1data[1] + 1);
-              proto2.href = onderzoeken[proto2data[0]];
-              firebase.database().ref(db + "/proto2/" + proto2data[0]).set(proto2data[1] + 1);
+              proto1.href = onderzoeken[finalproto1[0]];
+              firebase.database().ref(db + "/proto1/" + finalproto1[0]).set(finalproto1[1] + 1);
+              proto2.href = onderzoeken[pfinalproto2[0]];
+              firebase.database().ref(db + "/proto2/" + finalproto2[0]).set(finalproto2[1] + 1);
               firebase.database().ref(db).on('value', snapshot => {
                 values.innerHTML = JSON.stringify(snapshot.val(), null, "  ")
               });
