@@ -21,12 +21,13 @@
       #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; margin-top: 16px;}
+      #message a, input[type=submit] { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; margin-top: 16px; border: none; box-sizing: border-box; width: 100%}
+      #message input:focus { border: none; outline: none;}
       #message .proto { display: none; }
-      #message .abs {position: relative}
+      #message .abs {position: relative; margin-top: 16px;}
       #message label {display: block; position: absolute; top: -8px; left: 16px; background-color: white; padding: 0 8px;}
-      #message input[type=text] {display: block; padding: 8px; border-radius: 4px}
-      #message input[type=file] {display: block; width: 100%; margin: 16px 0;}
+      #message input[type=text], #message #filediv {display: block; padding: 10px; border: 2px solid black; border-radius: 4px; width: 100%; box-sizing: border-box;}
+      #message input[type=file] {display: block; width: 100%;}
       #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
       #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
       @media (max-width: 600px) {
@@ -41,14 +42,23 @@
       <h1>The Space usabilityonderzoek</h1>
       <h3 id="values"></h3>
       <p>Om te zorgen voor goede feedback schotelen we iedereen 2 willekeurige versies van het prototype voor, de versies die voor jouw geselecteerd zijn vind je hieronder (ze openen in een nieuw tabblad)</p>
-      <p class="abs form">
-        <label for="naam">Naam</label>
-        <input type="text" name="naam" id="naam">
-        <input type="file" name="file" id="file">
-      </p>
-      <a href="#" id="submit" class="form">Verzenden</a>
-      <a target="_blank" class="proto" href="https://firebase.google.com/docs/hosting/">Open eerste prototype</a>
-      <a target="_blank" class="proto" href="https://firebase.google.com/docs/hosting/">Open tweede prototype</a>
+      <form class="form">
+        <div class="abs">
+          <label for="naam" id="naamlabel">Naam</label>
+          <input type="text" name="naam" id="naam">
+        </div>
+        <div class="abs">
+          <label for="file" id="filelabel">Bestand</label>
+          <div id="filediv">
+            <input type="file" name="file" id="file">
+          </div>
+        </div>
+
+        <input type="submit" id="submit" value="Verzenden" />
+      </form>
+
+      <a target="_blank" class="proto" id="proto1" href="https://firebase.google.com/docs/hosting/">Open eerste prototype</a>
+      <a target="_blank" class="proto" id="proto2" href="https://firebase.google.com/docs/hosting/">Open tweede prototype</a>
     </div>
     <p id="load">Firebase SDK Loading&hellip;</p>
 
@@ -57,16 +67,12 @@
         const loadEl = document.querySelector('#load');
         const values = document.querySelector('#values');
         const submit = document.querySelector('#submit');
+        const naamlabel = document.querySelector('#naamlabel');
+        const naam = document.querySelector('#naam');
+        const file = document.querySelector('#file');
+        const filelabel = document.querySelector('#filelabel');
+        const filediv = document.querySelector('#filediv');
 
-        submit.addEventListener('click', event => {
-          document.querySelectorAll('.proto').forEach(element => {
-            element.style.display = 'block';
-          })
-          document.querySelectorAll('.form').forEach(element => {
-            element.style.display = 'none';
-          })
-
-        });
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
         // // The Firebase SDK is initialized and available here!
         //
@@ -81,6 +87,41 @@
         var storage = firebase.storage().ref();
         //
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        submit.addEventListener('click', event => {
+          event.preventDefault();
+          if (naam.value === "") {
+            naam.style.border = "2px solid red";
+            naamlabel.style.color = "red";
+            file.color = "red";
+          } else {
+            naam.style.border = "2px solid green";
+            naamlabel.style.color = "green";
+            file.color = "green";
+          }
+          if (file.value === "") {
+            filediv.style.border = "2px solid red";
+            filelabel.style.color = "red";
+          } else {
+            filediv.style.border = "2px solid green";
+            filelabel.style.color = "green";
+          }
+
+          if(naam.value !== "" && file.value !== "") {
+            bestandCloud = storage.child(name.value);
+            bestandLokaal = file.files[0];
+            bestandCloud.put(bestandLokaal).then(snapshot => {
+              console.log('geupload!');
+            });
+            document.querySelectorAll('.proto').forEach(element => {
+              element.style.display = 'block';
+            })
+            document.querySelectorAll('.form').forEach(element => {
+              element.style.display = 'none';
+            })
+          }
+
+        });
 
         try {
           let app = firebase.app();
