@@ -3,13 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Space Usabilityonderzoek</title>
+    <title>The Space Usabilityonderzoek (Database Creator)</title>
 
     <!-- update the version number as needed -->
     <script defer src="/__/firebase/8.3.1/firebase-app.js"></script>
     <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/8.3.1/firebase-database.js"></script>
-    <script defer src="/__/firebase/8.3.1/firebase-storage.js"></script>
 
     <style media="screen">
       body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
@@ -35,26 +34,16 @@
   <body>
     <div id="message">
       <h2>Welkom!</h2>
-      <h1>The Space usabilityonderzoek</h1>
+      <h1>The Space usabilityonderzoek (db creator)</h1>
       <h3 id="values"></h3>
-      <p>Om te zorgen voor goede feedback schotelen we iedereen 2 willekeurige versies van het prototype voor, de versies die voor jouw geselecteerd zijn vind je hieronder (ze openen in een nieuw tabblad)</p>
+      <p>Vul een naam in om een nieuwe database te maken voor de app</p>
       <form class="form">
         <div class="abs">
           <label for="naam" id="naamlabel">Naam</label>
           <input type="text" name="naam" id="naam">
         </div>
-        <div class="abs">
-          <label for="file" id="filelabel">Bestand</label>
-          <div id="filediv">
-            <input type="file" name="file" id="file">
-          </div>
-        </div>
-
         <input type="submit" id="submit" value="Verzenden" />
       </form>
-
-      <a target="_blank" class="proto" id="proto1" href="https://firebase.google.com/docs/hosting/">Open eerste prototype</a>
-      <a target="_blank" class="proto" id="proto2" href="https://firebase.google.com/docs/hosting/">Open tweede prototype</a>
     </div>
     <p id="load">Firebase SDK Loading&hellip;</p>
 
@@ -73,13 +62,9 @@
         // // The Firebase SDK is initialized and available here!
         //
         var config = {
-          databaseURL: "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/",
-          storageBucket: 'gs://ipmedth-individueel.appspot.com/'
+          databaseURL: "https://ipmedth-individueel-default-rtdb.europe-west1.firebasedatabase.app/"
         };
         firebase.initializeApp(config);
-        firebase.database().ref('v1').on('value', snapshot => {
-          values.innerHTML = JSON.stringify(snapshot.val())
-        });
         var storage = firebase.storage().ref();
         //
         // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
@@ -103,33 +88,20 @@
             naamlabel.style.color = "red";
             file.color = "red";
           } else {
+            firebase.database().ref(naam.value).set({
+              v1: 0,
+              v2: 0,
+              v3: 0,
+              v4: 0,
+              v5: 0,
+              v6: 0,
+              v7: 0,
+              v8: 0
+            });
+
             naam.style.border = "2px solid green";
             naamlabel.style.color = "green";
             file.color = "green";
-          }
-          if (file.value === "") {
-            filediv.style.border = "2px solid red";
-            filelabel.style.color = "red";
-          } else {
-            filediv.style.border = "2px solid green";
-            filelabel.style.color = "green";
-          }
-
-          if(naam.value !== "" && file.value !== "") {
-            bestandCloud = storage.child(naam.value);
-            bestandLokaal = file.files[0];
-            bestandCloud.put(bestandLokaal).then(snapshot => {
-              console.log('geupload!');
-            });
-            document.querySelectorAll('.proto').forEach(element => {
-              element.style.display = 'block';
-              firebase.database().ref('v1').on('value', snapshot => {
-                values.innerHTML = JSON.stringify(snapshot.val())
-              });
-            })
-            document.querySelectorAll('.form').forEach(element => {
-              element.style.display = 'none';
-            })
           }
 
         });
