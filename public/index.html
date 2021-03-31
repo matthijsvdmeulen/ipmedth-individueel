@@ -28,6 +28,9 @@
         "v7": "https://t.maze.design/33056327",
         "v8": "https://t.maze.design/33068859",
       }
+
+      // URL Google form
+      const googleform = "https://docs.google.com/forms/d/e/1FAIpQLSd9NbDaKWg6ybaD40iIUHU-aLDR72ncINM-HplqSqtLeiY2mA/viewform?usp=pp_url&entry.195515593="
     </script>
 
     <!-- update the version number as needed -->
@@ -62,8 +65,9 @@
       <h2>Welkom!</h2>
       <h1>The Space usabilityonderzoek</h1>
       <p class="proto">Om te zorgen voor goede feedback schotelen we iedereen 2 willekeurige versies van het prototype voor, de versies die voor jouw geselecteerd zijn vind je hieronder (ze openen in een nieuw tabblad)</p>
-      <a target="_blank" class="proto" id="proto1" href="https://firebase.google.com/docs/hosting/">Open eerste prototype</a>
-      <a target="_blank" class="proto" id="proto2" href="https://firebase.google.com/docs/hosting/">Open tweede prototype</a>
+      <a target="_blank" class="proto" id="proto1" href="#">Open eerste prototype</a>
+      <a target="_blank" class="proto" id="proto2" href="#">Open tweede prototype</a>
+      <a target="_blank" class="proto" id="googleform" href="#">Open afsluitende enquête</a>
       <p class="form">Wij zijn door school verplicht om van al onze testpersonen een foto met de testopstelling aan te leveren samen met de naam van de testpersoon. Maak dus alsjeblieft een foto of selfie met deze pagina, en upload die hieronder. Deze gegevens worden strikt vertrouwelijk behandeld en worden alleen aan de examinatoren van ons onderzoek doorgestuurd</p>
       <form class="form">
         <div class="abs">
@@ -140,6 +144,7 @@
 
             proto1 = document.querySelector('#proto1');
             proto2 = document.querySelector('#proto2');
+            googleformknop = document.querySelector('#googleform');
 
             firebase.database().ref(db).once('value', snapshot => {
               proto1data = Object.entries(snapshot.val().proto1);
@@ -159,6 +164,8 @@
               firebase.database().ref(db + "/proto1/" + finalproto1[0]).set(finalproto1[1] + 1);
               proto2.href = onderzoeken[finalproto2[0]];
               firebase.database().ref(db + "/proto2/" + finalproto2[0]).set(finalproto2[1] + 1);
+
+              googleformknop.href = googleform + naam.value;
             });
 
             document.querySelectorAll('.proto').forEach(element => {
