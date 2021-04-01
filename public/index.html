@@ -75,7 +75,7 @@
           <input type="text" name="naam" id="naam">
         </div>
         <div class="abs">
-          <label for="file" id="filelabel">Bestand</label>
+          <label for="file" id="filelabel">Foto</label>
           <div id="filediv">
             <input type="file" name="file" id="file">
           </div>
@@ -141,7 +141,9 @@
             bestandCloud.put(bestandLokaal).then(snapshot => {
               console.log('geupload!');
             });
+          }
 
+          if(file.value !== "") {
             proto1 = document.querySelector('#proto1');
             proto2 = document.querySelector('#proto2');
             googleformknop = document.querySelector('#googleform');
