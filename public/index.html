@@ -73,7 +73,7 @@
         Om privacyredenen kunnen en willen we dit niet verplicht stellen, maar we hebben van de docent (nog) geen eenduidige oplossing gekregen, dus hopen dat we hiermee voldoen aan de regels.
       </p>
       <p class="form">
-        Deze gegevens worden strikt vertrouwelijk behandeld en worden alleen aan de examinatoren van ons onderzoek doorgestuurd.
+        Deze gegevens worden strikt vertrouwelijk behandeld en worden alleen aan de examinatoren van ons onderzoek doorgestuurd. (Als je geen foto selecteert wordt de naam alleen gebruikt om automatisch op volgende schermen ingevuld te worden)
       </p>
       <form class="form">
         <div class="abs">
@@ -133,13 +133,13 @@
             naamlabel.style.color = "green";
             file.color = "green";
           }
-          if (file.value === "") {
-            filediv.style.border = "2px solid red";
-            filelabel.style.color = "red";
-          } else {
-            filediv.style.border = "2px solid green";
-            filelabel.style.color = "green";
-          }
+          // if (file.value === "") {
+          //   filediv.style.border = "2px solid red";
+          //   filelabel.style.color = "red";
+          // } else {
+          //   filediv.style.border = "2px solid green";
+          //   filelabel.style.color = "green";
+          // }
 
           if(naam.value !== "" && file.value !== "") {
             bestandCloud = storage.child(naam.value);
